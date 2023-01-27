@@ -10,7 +10,7 @@ M.setup = function(opts)
 
   opts = config.opts
   if opts['enable'] == true then
-    vim.g.autosave_statte = true
+    vim.g.autosave_state = true
     require('autosave.action').enable()
   else
     vim.g.autosave_state = false
