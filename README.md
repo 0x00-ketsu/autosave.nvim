@@ -28,21 +28,37 @@ A NeoVim plugin written in Lua that aims to automatically saving file(s) when ch
 
 ## Installation
 
-[Packer](https://github.com/wbthomason/packer.nvim)
+- [Lazy](https://github.com/folke/lazy.nvim)
 
-```lua
--- Lua
-use {
-  '0x00-ketsu/autosave.nvim',
-  config = function()
-    require('autosave').setup {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    },
-  end
-}
-```
+  ```lua
+  -- lua
+  require('lazy').setup({
+    '0x00-ketsu/autosave.nvim',
+    config = function()
+      require('autosave').setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      },
+    end
+  })
+  ```
+
+- [Packer](https://github.com/wbthomason/packer.nvim)
+
+  ```lua
+  -- Lua
+  use {
+    '0x00-ketsu/autosave.nvim',
+    config = function()
+      require('autosave').setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      },
+    end
+  }
+  ```
 
 ## Setup
 
