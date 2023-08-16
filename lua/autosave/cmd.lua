@@ -58,23 +58,23 @@ function M.load_autocommands()
   end
 
   local events = table.concat(utils.get_events(), ',')
-  api.nvim_exec(
+  api.nvim_exec2(
       [[
 		aug AUTOSAVE
 			au!
 			au ]] .. events .. [[ * execute "lua require('autosave.cmd').save()"
 		aug END
-	]], false
+	]]
   )
 end
 
 function M.unload_autocommands()
-  api.nvim_exec(
+  api.nvim_exec2(
       [[
 		aug AUTOSAVE
 			au!
 		aug END
-	]], false
+	]]
   )
 end
 
