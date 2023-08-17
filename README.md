@@ -2,9 +2,20 @@
 
 A NeoVim plugin written in Lua that aims to automatically saving file(s) when changed.
 
-> **Requirements**
+## Requirements
+
+Neovim version >= `0.9.0` (or [nightly](https://github.com/neovim/neovim/releases/tag/nightly))
+
 >
-> - Neovim version >= 0.5.0 (or [nightly](https://github.com/neovim/neovim/releases/tag/nightly))
+> For Neovim `0.5.0` <= version < `0.9.0`, use tag `v1.0`.
+
+## Features
+
+- Automatically save current file(s).
+- Set conditions that file(s) must meet to be saved (e.g. filetype, existence, ...).
+- Specific events that will trigger the plugin.
+- Custom hook(s) (e.g. print a message when the plugin is enabled).
+- Toggle (enable if disabled, disable if enabled) the plugin.
 
 **Screenshots**
 
@@ -17,14 +28,6 @@ A NeoVim plugin written in Lua that aims to automatically saving file(s) when ch
 <summary>prompt_style = 'notify'</summary>
 <img src="https://user-images.githubusercontent.com/16932133/214277262-5d0237e0-71f1-4c00-bbab-227a55a24228.png"/>
 </details>
-
-## Features
-
-- Automatically save current file(s).
-- Set conditions that file(s) must meet to be saved (e.g. filetype, existence, ...).
-- Specific events that will trigger the plugin.
-- Custom hook(s) (e.g. print a message when the plugin is enabled).
-- Toggle (enable if disabled, disable if enabled) the plugin.
 
 ## Installation
 
