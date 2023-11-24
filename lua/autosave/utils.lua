@@ -15,7 +15,7 @@ M.notify = function(message)
   local ok, notify = pcall(require, 'notify')
   if ok then
     vim.notify = notify
-    vim.notify(message, level, {title = config.plugin_name})
+    vim.notify(message, level, { title = config.plugin_name })
   else
     vim.notify(message, level)
   end
@@ -36,12 +36,10 @@ M.debounce = function(lfn, duration)
 
   local function inner_debounce()
     if not queued then
-      vim.defer_fn(
-          function()
-            queued = false
-            lfn()
-          end, duration
-      )
+      vim.defer_fn(function()
+        queued = false
+        lfn()
+      end, duration)
       queued = true
     end
   end
@@ -87,7 +85,7 @@ M.assert_user_conditions = function()
     end
   end
 
-  return {sc_exists, sc_filename, sc_filetype, sc_modifiable}
+  return { sc_exists, sc_filename, sc_filetype, sc_modifiable }
 end
 
 ---Return true for every x in values is equal with expected.

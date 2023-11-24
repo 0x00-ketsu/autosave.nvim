@@ -1,8 +1,8 @@
 local api = vim.api
 local cmd = vim.cmd
 
-local config = require('autosave.config')
 local autosave = require('autosave')
+local config = require('autosave.config')
 local utils = require('autosave.utils')
 
 local default_opts = config.opts
@@ -58,23 +58,22 @@ function M.load_autocommands()
   end
 
   local events = table.concat(utils.get_events(), ',')
-  api.nvim_exec2(
-      [[
+  api.nvim_exec2([[
 		aug AUTOSAVE
 			au!
 			au ]] .. events .. [[ * execute "lua require('autosave.cmd').save()"
 		aug END
-	]], {}
-  )
+	]], {})
 end
 
 function M.unload_autocommands()
   api.nvim_exec2(
-      [[
+    [[
 		aug AUTOSAVE
 			au!
 		aug END
-	]], {}
+	]],
+    {}
   )
 end
 

@@ -1,12 +1,12 @@
-local autosave = require('autosave')
 local autocmd = require('autosave.cmd')
+local autosave = require('autosave')
 
 local M = {}
 
 ---Toggle (enable if disabled, disable if enabled) the plugin
 ---
 M.toggle = function()
-  if (vim.g.autosave_state == true) then
+  if vim.g.autosave_state == true then
     M.disable()
   else
     M.enable()
@@ -31,14 +31,14 @@ end
 ---Disactivate the plugin
 ---
 M.disable = function()
-  if (autosave.hook_before_disable ~= nil) then
+  if autosave.hook_before_disable ~= nil then
     autosave.hook_before_disable()
   end
 
   autocmd.unload_autocommands()
   vim.g.autosave_state = false
 
-  if (autosave.hook_after_disable ~= nil) then
+  if autosave.hook_after_disable ~= nil then
     autosave.hook_after_disable()
   end
 end
