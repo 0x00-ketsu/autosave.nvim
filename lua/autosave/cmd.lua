@@ -27,12 +27,16 @@ end
 local M = {}
 
 function M.save()
-  vim.g.auto_save_abort = false
+  -- skip if the buffer is readonly
+  if vim.bo.readonly then
+    return
+  end
 
   if autosave.hook_before_saving ~= nil then
     autosave.hook_before_saving()
   end
 
+  vim.g.auto_save_abort = false
   if vim.g.auto_save_abort then
     return
   end
