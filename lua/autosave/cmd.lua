@@ -60,9 +60,10 @@ function M.load_autocmds()
     M.debounced_save = utils.debounce(M.save_actually, debounce_delay)
   end
 
-  local events = table.concat(utils.get_events(), ',')
+  local events = utils.get_events()
+  local autosave_group = vim.api.nvim_create_augroup('AUTOSAVE', { clear = true })
   vim.api.nvim_create_autocmd(events, {
-    group = 'AUTOSAVE',
+    group = autosave_group,
     pattern = '*',
     callback = function()
       require('autosave.cmd').save()
@@ -102,6 +103,10 @@ function M.send_message()
     set_modified(false)
 
     local prompt = config.opts.prompt
+    if not prompt.enable then
+      return
+    end
+
     -- stylua: ignore start
     local message = type(prompt.message) == 'function' and prompt.message() or tostring(prompt.message)
     -- stylua: ignore end

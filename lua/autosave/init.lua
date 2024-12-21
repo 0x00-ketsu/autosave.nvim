@@ -2,7 +2,7 @@ local config = require('autosave.config')
 
 local M = {}
 
----@param opts Config?
+---@param opts ASConfig?
 M.setup = function(opts)
   config.setup(opts)
   if config.opts.enable == true then

@@ -1,5 +1,5 @@
-local autocmd = require('autosave.cmd')
 local autosave = require('autosave')
+local cmd = require('autosave.cmd')
 
 local M = {}
 
@@ -20,7 +20,7 @@ M.enable = function()
     autosave.hook_before_enable()
   end
 
-  autocmd.load_autocmds()
+  cmd.load_autocmds()
   vim.g.autosave_state = true
 
   if autosave.hook_after_enable ~= nil then
@@ -35,7 +35,7 @@ M.disable = function()
     autosave.hook_before_disable()
   end
 
-  autocmd.unload_autocmds()
+  cmd.unload_autocmds()
   vim.g.autosave_state = false
 
   if autosave.hook_after_disable ~= nil then

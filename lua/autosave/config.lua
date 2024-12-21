@@ -1,4 +1,4 @@
----@type Config
+---@type OptConfig
 local defaults = {
   enable = true,
   prompt = {
@@ -21,12 +21,12 @@ local defaults = {
 
 local M = { plugin_name = 'autosave.nvim' }
 
----@type Config
+---@type OptConfig
 M.opts = nil
 
 ---Assign options
 ---
----@param opts Config?
+---@param opts ASConfig?
 M.setup = function(opts)
   M.opts = vim.tbl_deep_extend('force', {}, defaults, opts or {})
 end
