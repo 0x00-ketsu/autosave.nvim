@@ -2,14 +2,10 @@ local config = require('autosave.config')
 
 local M = {}
 
----Entrance
----
----@param opts nil | table
+---@param opts Config?
 M.setup = function(opts)
   config.setup(opts)
-
-  opts = config.opts
-  if opts['enable'] == true then
+  if config.opts.enable == true then
     vim.g.autosave_state = true
     require('autosave.action').enable()
   else

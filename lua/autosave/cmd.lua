@@ -1,13 +1,8 @@
-local api = vim.api
-local cmd = vim.cmd
-
 local autosave = require('autosave')
 local config = require('autosave.config')
 local utils = require('autosave.utils')
 
-local default_opts = config.opts
-
--- Used to mark whether the file has been modified
+---Used to keep track of the buffer's modified status
 local modified = false
 
 ---Setter method for field `modified`
@@ -26,6 +21,7 @@ end
 
 local M = {}
 
+---Save buffer(s)
 function M.save()
   -- skip if the buffer is readonly
   if vim.bo.readonly then
@@ -48,47 +44,48 @@ function M.save()
   end
 end
 
+---Save buffer(s) if conditions are met
 function M.do_save()
   if utils.assert_return(utils.assert_user_conditions(), true) then
     M.debounced_save()
   end
 end
 
-function M.load_autocommands()
-  if default_opts['debounce_delay'] == 0 then
+---Load autocmds
+function M.load_autocmds()
+  local debounce_delay = config.opts.debounce_delay
+  if debounce_delay == 0 then
     M.debounced_save = M.save_actually
   else
-    M.debounced_save = utils.debounce(M.save_actually, default_opts['debounce_delay'])
+    M.debounced_save = utils.debounce(M.save_actually, debounce_delay)
   end
 
   local events = table.concat(utils.get_events(), ',')
-  api.nvim_exec2([[
-		aug AUTOSAVE
-			au!
-			au ]] .. events .. [[ * execute "lua require('autosave.cmd').save()"
-		aug END
-	]], {})
+  vim.api.nvim_create_autocmd(events, {
+    group = 'AUTOSAVE',
+    pattern = '*',
+    callback = function()
+      require('autosave.cmd').save()
+    end,
+  })
 end
 
-function M.unload_autocommands()
-  api.nvim_exec2(
-    [[
-		aug AUTOSAVE
-			au!
-		aug END
-	]],
-    {}
-  )
+---Unload autocmds
+function M.unload_autocmds()
+  local augroup = 'AUTOSAVE'
+  vim.api.nvim_clear_autocmds({ group = augroup })
 end
 
----Save buffer(s)
+---Save buffer(s) actually
 ---
+---If the buffer is modified, it will be saved.
+---If the buffer is not modified, it will not be saved.
 M.save_actually = function()
-  if api.nvim_eval('&modified') == 1 then
-    if default_opts['write_all_buffers'] then
-      cmd('silent! wall')
+  if vim.api.nvim_eval('&modified') == 1 then
+    if config.opts.write_all_buffers then
+      vim.cmd('silent! wall')
     else
-      cmd('silent! write')
+      vim.cmd('silent! write')
     end
 
     if get_modified() == nil or get_modified() == false then
@@ -99,19 +96,19 @@ M.save_actually = function()
   end
 end
 
+---Send message
 function M.send_message()
   if get_modified() == true then
     set_modified(false)
 
-    local style = default_opts['prompt_style']
-    local prompt = default_opts['prompt_message']
-    if prompt ~= nil and prompt ~= '' then
-      message = type(prompt) == 'function' and prompt() or prompt
-      if style == 'stdout' then
-        print(message)
-      elseif style == 'notify' then
-        utils.notify(message)
-      end
+    local prompt = config.opts.prompt
+    -- stylua: ignore start
+    local message = type(prompt.message) == 'function' and prompt.message() or tostring(prompt.message)
+    -- stylua: ignore end
+    if prompt.style == 'notify' then
+      utils.notify(message)
+    else
+      print(message)
     end
   end
 end

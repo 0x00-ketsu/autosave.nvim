@@ -1,9 +1,13 @@
+---@type Config
 local defaults = {
   enable = true,
-  prompt_style = 'stdout',
-  prompt_message = function()
-    return 'Autosave: saved at ' .. vim.fn.strftime('%H:%M:%S')
-  end,
+  prompt = {
+    enable = true,
+    style = 'stdout',
+    message = function()
+      return 'Autosave: saved at ' .. vim.fn.strftime('%H:%M:%S')
+    end,
+  },
   events = { 'InsertLeave', 'TextChanged' },
   conditions = {
     exists = true,
@@ -17,6 +21,12 @@ local defaults = {
 
 local M = { plugin_name = 'autosave.nvim' }
 
+---@type Config
+M.opts = nil
+
+---Assign options
+---
+---@param opts Config?
 M.setup = function(opts)
   M.opts = vim.tbl_deep_extend('force', {}, defaults, opts or {})
 end

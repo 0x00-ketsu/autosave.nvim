@@ -12,7 +12,7 @@ Neovim version >= `0.9.0` (or [nightly](https://github.com/neovim/neovim/release
 ## Features
 
 - Automatically save the current file(s).
-- Define conditions that files must meet to be saved (e.g., file type, existence).
+- Define conditions that files must meet to be saved (e.g., filetype, existence).
 - Specify events that will trigger the plugin.
 - Implement custom hooks (e.g., display a message when the plugin is enabled).
 - Toggle the plugin's state (enable if disabled, disable if enabled).
@@ -20,12 +20,12 @@ Neovim version >= `0.9.0` (or [nightly](https://github.com/neovim/neovim/release
 **Screenshots**
 
 <details>
-<summary>prompt_style = 'stdout'</summary>
+<summary>prompt.style = 'stdout'</summary>
 <img src="https://user-images.githubusercontent.com/16932133/214277152-21328c1c-438b-4f2b-87cd-ec13277e28b4.png"/>
 </details>
 
 <details>
-<summary>prompt_style = 'notify'</summary>
+<summary>prompt.style = 'notify'</summary>
 <img src="https://user-images.githubusercontent.com/16932133/214277262-5d0237e0-71f1-4c00-bbab-227a55a24228.png"/>
 </details>
 
@@ -73,10 +73,13 @@ Following defaults:
 require('autosave').setup(
     {
         enable = true,
-        prompt_style = 'stdout',
-        prompt_message = function()
-          return 'Autosave: saved at ' .. vim.fn.strftime('%H:%M:%S')
-        end,
+        prompt = {
+            enable = true,
+            style = 'stdout',
+            message = function()
+            return 'Autosave: saved at ' .. vim.fn.strftime('%H:%M:%S')
+            end,
+        },
         events = {'InsertLeave', 'TextChanged'},
         conditions = {
             exists = true,
@@ -94,9 +97,9 @@ For details, check out the [Configuration](#Configuration) section.
 
 ## Commands
 
-- `:ASToggle`: toggle the plugin on and off.
-- `:ASEnable`: enable autosave.nvim.
-- `:ASDisable`: disable autosave.nvim.
+- `:ASToggle`: Toggle the plugin's activation state.
+- `:ASEnable`: Activate this plugin.
+- `:ASDisable`: Deactivate this plugin.
 
 ## Configuration
 
@@ -104,23 +107,22 @@ Although settings already have self-explanatory names, here is where you can fin
 
 ### General
 
-- `enable`: (boolean) if true, enables autosave.nvim at startup, same as `:ASEnable`.
-- `prompt_style`: (string) style to display `prompt_message`, choices: `stdout` `notify`
-- `prompt_message`: (string) message to be displayed when saving file(s).
-- `events`: (table): events that will trigger the plugin.
-- `write_all_buffers`: (boolean) if true, writes to all modifiable buffers that meet the `conditions`.
-- `debounce_delay`: (integer) if greater than 0, saves the file at most every `debounce_delay` milliseconds, vastly improving editing performance.
-If 0 then saves are performed immediately after `events` occur.
+- **enable**: (`boolean`) if `true`, enables **autosave.nvim** at startup, same as `:ASEnable`.
+- **prompt**: (`table`) prompt settings.
+- **events**: (`table`): events that will trigger the plugin.
+- **write_all_buffers**: (`boolean`) if `true`, writes to all modifiable buffers that meet the `conditions`.
+- **debounce_delay**: (number) if greater than `0`, saves the file at most every `debounce_delay` milliseconds, vastly improving editing performance.
+If `0` then saves are performed immediately after `events` occur.
 It's recommend to leave the default value (`135`), which is just long enough to reduce unnecessary saves, but short enough that you don't notice the delay.
 
 ### Conditions
 
 These are the conditions that every file must meet so that it can be saved. If every file to be auto-saved doesn't meet all of the conditions it won't be saved.
 
-- `exists`: (boolean) if true, enables this condition. If the file doesn't exist it won't save it (e.g. if you `nvim stuff.txt` and don't save the file then this condition won't be met)
-- `modifiable`: (boolean) if true, enables this condition. If the file isn't modifiable, then this condition isn't met.
-- `filename_is_not`: (table, string) if there is one or more filenames (should be array) in the table, it enables this condition. Use this to exclude filenames that you don't want to automatically save.
-- `filetype_is_not`: (table, string) if there is one or more filetypes (should be array) in the table, it enables this condition. Use this to exclude filetypes that you don't want to automatically save.
+- **exists**: (`boolean`) if `true`, enables this condition. If the file doesn't exist it won't save it (e.g. if you `nvim stuff.txt` and don't save the file then this condition won't be met)
+- **modifiable**: (`boolean`) if `true`, enables this condition. If the file isn't modifiable, then this condition isn't met.
+- **filename_is_not**: (`table`, `string`) if there is one or more filenames (**should be array**) in the `table`, it enables this condition. Use this to exclude filenames that you don't want to automatically save.
+- **filetype_is_not**: (`table`, `string`) if there is one or more filetypes (**should be array**) in the `table`, it enables this condition. Use this to exclude filetypes that you don't want to automatically save.
 
 ### Hooks
 

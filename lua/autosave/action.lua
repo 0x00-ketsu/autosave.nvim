@@ -20,7 +20,7 @@ M.enable = function()
     autosave.hook_before_enable()
   end
 
-  autocmd.load_autocommands()
+  autocmd.load_autocmds()
   vim.g.autosave_state = true
 
   if autosave.hook_after_enable ~= nil then
@@ -35,7 +35,7 @@ M.disable = function()
     autosave.hook_before_disable()
   end
 
-  autocmd.unload_autocommands()
+  autocmd.unload_autocmds()
   vim.g.autosave_state = false
 
   if autosave.hook_after_disable ~= nil then
