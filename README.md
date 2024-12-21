@@ -11,11 +11,11 @@ Neovim version >= `0.9.0` (or [nightly](https://github.com/neovim/neovim/release
 
 ## Features
 
-- Automatically save current file(s).
-- Set conditions that file(s) must meet to be saved (e.g. filetype, existence, ...).
-- Specific events that will trigger the plugin.
-- Custom hook(s) (e.g. print a message when the plugin is enabled).
-- Toggle (enable if disabled, disable if enabled) the plugin.
+- Automatically save the current file(s).
+- Define conditions that files must meet to be saved (e.g., file type, existence).
+- Specify events that will trigger the plugin.
+- Implement custom hooks (e.g., display a message when the plugin is enabled).
+- Toggle the plugin's state (enable if disabled, disable if enabled).
 
 **Screenshots**
 
@@ -70,8 +70,7 @@ Neovim version >= `0.9.0` (or [nightly](https://github.com/neovim/neovim/release
 Following defaults:
 
 ```lua
-local autosave = require('autosave')
-autosave.setup(
+require('autosave').setup(
     {
         enable = true,
         prompt_style = 'stdout',
@@ -127,14 +126,14 @@ These are the conditions that every file must meet so that it can be saved. If e
 
 | Function             | Description  |
 |----------------------|----------------------------------|
-| hook_before_enable()     | Before activate the plugin |
-| hook_after_enable()      | After activate the plugin |
-| hook_before_disable()    | Before disactivate the plugin |
-| hook_after_disable()     | After disactivate the plugin |
-| hook_before_saving() | Before saving file(s) |
-| hook_after_saving    | After saving file(s) |
+| `hook_before_enable()`     | Executed before the plugin is enabled |
+| `hook_after_enable()`      | Executed after the plugin is enabled |
+| `hook_before_disable()`    | Executed before the plugin is disabled |
+| `hook_after_disable()`     | Executed after the plugin is disabled |
+| `hook_before_saving()` | Executed before saving the file(s) |
+| `hook_after_saving()`    | Executed after saving the file(s) |
 
-e.g.
+**e.g.**
 
 `hook_after_disable`
 
@@ -162,7 +161,7 @@ end
 
   `vim.g.autosave_state` (variable type is `boolean`)
 
-  e.g.
+  **e.g.**
 
   ```lua
   local is_enable_autosave = vim.g.autosave_state and ' 💾 ' or ''
