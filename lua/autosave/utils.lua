@@ -30,21 +30,26 @@ M.get_events = function()
   end
 end
 
+---Trailing debounce: every call resets the timer, so `lfn` only runs once the
+---caller has been quiet for `duration` ms. This coalesces a burst of events
+---(e.g. rapid insert<->normal switches during a long edit) into a single call
+---that lands only after you pause, instead of firing on a fixed cadence.
+---
+---@param lfn function
+---@param duration integer milliseconds of quiescence before `lfn` runs
 ---@return function
 M.debounce = function(lfn, duration)
-  local queued = false
+  local timer = (vim.uv or vim.loop).new_timer()
 
-  local function inner_debounce()
-    if not queued then
-      vim.defer_fn(function()
-        queued = false
-        lfn()
-      end, duration)
-      queued = true
-    end
+  return function()
+    timer:stop()
+    timer:start(duration, 0, function()
+      timer:stop()
+      -- The timer callback runs off the main loop; hop back before `lfn`
+      -- touches buffers/vim APIs.
+      vim.schedule(lfn)
+    end)
   end
-
-  return inner_debounce
 end
 
 ---@return table
