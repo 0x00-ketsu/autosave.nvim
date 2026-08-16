@@ -28,6 +28,8 @@ function M.save()
     return
   end
 
+  vim.g.auto_save_abort = false
+
   if autosave.hook_before_saving ~= nil then
     autosave.hook_before_saving()
   end
