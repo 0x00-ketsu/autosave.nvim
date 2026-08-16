@@ -34,7 +34,6 @@ function M.save()
     autosave.hook_before_saving()
   end
 
-  vim.g.auto_save_abort = false
   if vim.g.auto_save_abort then
     return
   end
